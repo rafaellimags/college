@@ -1,9 +1,3 @@
-# valor de aplicação inicial
-# percentual de rendimento mensal
-# valor de aporte mensal
-
-# rendimento total (calculado)
-
 def get_entry_data():
     initial_inv = float(input('Valor inicial: '))
     monthly_prof = float(input('Rendimento (a.m.): ')) / 100
