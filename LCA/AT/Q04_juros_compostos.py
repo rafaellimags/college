@@ -1,6 +1,4 @@
 import matplotlib.pyplot as plt
-import numpy as np
-
 
 def get_entry_data():
     initial_inv = float(input('Valor inicial: '))
