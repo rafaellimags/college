@@ -86,11 +86,20 @@ def calcular_variacao_pib(pais):
     print(f'Variação de {variacao_percentual_pib} entre 2013 e 2020')
 
 
-def mostrar_variacao_grafica(cabecalho, pais):
-    ano = cabecalho
-    pib = pais
+def mostrar_variacao_grafica(anos, pibs):
+    
+    x = []
+    y = []
 
-    plt.plot(ano, pib)
+    for ano in anos:
+        x.append(int(ano))
+
+    for pib in pibs:
+        y.append(float(pib))
+
+    # print(x)
+    # print(y)
+    plt.plot(x, y)
     plt.xlabel('Ano')
     plt.ylabel('PIB')
     plt.grid(True)
