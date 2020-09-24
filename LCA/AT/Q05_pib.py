@@ -1,8 +1,11 @@
+import matplotlib.pyplot as plt
+
+
 def menu():
     print('# Selecione:')
-    print('> 1 para busca individual de um país')
-    print('> 2 para listar a estimativa de variação do PIB entre 2013 e 2020.')
-    print('> 3 para gráfico da evolução do PIB')
+    print('> 1 para busca individual do PIB de um país no ano')
+    print('> 2 para listar a estimativa de variação do PIB entre 2013 e 2020')
+    print('> 3 para gráfico da evolução do PIB de um país específico')
     selecao = input('\n> ')
     pegar_dados(selecao)
 
@@ -16,10 +19,10 @@ def pegar_dados(selecao):
         mostrar_dados_pais(cabecalho, paises, pais, ano)
     elif selecao == '2':
         pais = input('\nInforme um país: ')
-        filtrar_pais(cabecalho, paises, pais)
+        filtrar_pais(cabecalho, paises, pais, selecao)
     else:
         pais = input('\nInforme um país: ')
-        # mostrar_variacao_grafica()
+        filtrar_pais(cabecalho, paises, pais, selecao)
 
 
 def chamar_arquivo():
@@ -53,21 +56,26 @@ def mostrar_dados_pais(cabecalho, paises, str_pais, ano):
 
     for lst_pais in paises:
         lst_pais = lst_pais[coluna_paises].split(',')
-        if lst_pais[coluna_paises] == str_pais:
+        if lst_pais[coluna_paises].lower() == str_pais.lower():
             print(
-                f'\nPIB {str_pais} em {ano}: U${lst_pais[index_ano]} trilhões.')
+                f'\nPIB {lst_pais[coluna_paises]} em {ano}: U${lst_pais[index_ano]} trilhões.')
             return
 
     print('Pais inválido')
 
 
-def filtrar_pais(cabecalho, paises, str_pais):
+def filtrar_pais(cabecalho, paises, str_pais, sel):
     cabecalho = cabecalho[0].split(',')
     index_coluna_pais = cabecalho.index('País')
     for pais in paises:
         pais = pais[index_coluna_pais].split(',')
-        if pais[index_coluna_pais] == str_pais:
-            calcular_variacao_pib(pais)
+        if pais[index_coluna_pais].lower() == str_pais.lower():
+            if sel == '2':
+                calcular_variacao_pib(pais)
+            if sel == '3':
+                mostrar_variacao_grafica(cabecalho[1:], pais[1:])
+            return
+    print('O país informado não existe na lista.')
 
 
 def calcular_variacao_pib(pais):
@@ -75,11 +83,18 @@ def calcular_variacao_pib(pais):
     f_ultimo_pib = float(pais[-1])
     variacao_pib = (f_ultimo_pib / f_primeiro_pib) - 1
     variacao_percentual_pib = f"{(variacao_pib * 100):.2f}%"
-    print(f'Variação de {variacao_percentual_pib}% entre 2013 e 2020')
+    print(f'Variação de {variacao_percentual_pib} entre 2013 e 2020')
 
 
-def mostrar_mensagem(dados_msg):
-    print(dados_msg)
+def mostrar_variacao_grafica(cabecalho, pais):
+    ano = cabecalho
+    pib = pais
+
+    plt.plot(ano, pib)
+    plt.xlabel('Ano')
+    plt.ylabel('PIB')
+    plt.grid(True)
+    plt.show()
 
 
 menu()
