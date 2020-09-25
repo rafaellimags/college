@@ -87,7 +87,7 @@ def calcular_variacao_pib(pais):
 
 
 def mostrar_variacao_grafica(anos, pibs):
-    
+
     x = []
     y = []
 
@@ -97,8 +97,6 @@ def mostrar_variacao_grafica(anos, pibs):
     for pib in pibs:
         y.append(float(pib))
 
-    # print(x)
-    # print(y)
     plt.plot(x, y)
     plt.xlabel('Ano')
     plt.ylabel('PIB')
