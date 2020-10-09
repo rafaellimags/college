@@ -19,18 +19,18 @@ def cadastrar_contato(nome, telefone, email, arquivo_agenda):
     agenda.write(f"{nome}, {telefone}, {email}\r")
     agenda.close()
 
-agenda = open("agenda.csv", "w")
+agenda = open("data/agenda.csv", "w")
 agenda.write("Nome,Telefone,Email\r")
 agenda.close()
 
 cadastrar_contato("Rafael", "81999999999",
-                  "rafael@exemplo.com.br", "agenda.csv")
+                  "rafael@exemplo.com.br", "data/agenda.csv")
 cadastrar_contato("Mariana", "41999999999",
-                  "mariana@exemplo.com.br", "agenda.csv")
+                  "mariana@exemplo.com.br", "data/agenda.csv")
 cadastrar_contato("Marina", "21999999999",
-                  "marina@exemplo.com.br", "agenda.csv")
+                  "marina@exemplo.com.br", "data/agenda.csv")
 
-agenda = open("agenda.csv")
+agenda = open("data/agenda.csv")
 contatos = agenda.readlines()
 for contato in contatos:
     print(contato)
@@ -79,7 +79,7 @@ def buscar_contato(busca, arquivo_agenda):
         print(f"\nNenhum resultado foi encontrado.")
 
 
-buscar_contato("mARi", "agenda.csv")
+buscar_contato("mARi", "data/agenda.csv")
 
 arquivo_agenda = input("Informe o arquivo de agenda: ")
 while True:

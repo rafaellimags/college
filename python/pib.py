@@ -26,7 +26,7 @@ def pegar_dados(selecao):
 
 
 def chamar_arquivo():
-    return f"./PIBs.csv"
+    return f"./data/PIBs.csv"
 
 
 def preparar_dados():
