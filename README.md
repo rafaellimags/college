@@ -11,3 +11,9 @@
 * [Saúde financeira](python/saude_financeira.py)
 
 ### Fundamentos de Python
+
+* [Troca de números(Modificado)](python/1-var_change.py)
+* [Média aritmética](python/2-average.py)
+* [Média ponderada](python/3-average_weight.py)
+* [Gorjeta](python/4-tip.py)
+* [Aumento salarial](python/5-salary_raise.py)
