@@ -22,3 +22,6 @@
 * [Area do circulo](python/circulo.py)
 * [Area da esfera](python/esfera.py)
 * [Area cilindro](python/cilindro.py)
+* [Verificação de sinal](python/verify_signal.py)
+* [Par ou ímpar](python/odd_or_even.py)
+* [Achar o maior número](python/largest_number.py)
