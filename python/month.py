@@ -1,29 +1,21 @@
-month = input('Mês do ano(número): ')
+print('\nInforme um mês de 1 a 12')
+month = int(input('Mês do ano: '))
+
 
 def check_month(month):
-    if (month == '1'):
-        print('Janeiro')
-    if (month == '2'):
-        print('Fevereiro')
-    if (month == '3'):
-        print('Março')
-    if (month == '4'):
-        print('Abril')
-    if (month == '5'):
-        print('Maio')
-    if (month == '6'):
-        print('Junho')
-    if (month == '7'):
-        print('Julho')
-    if (month == '8'):
-        print('Agosto')
-    if (month == '9'):
-        print('Setembro')
-    if (month == '10'):
-        print('Outubro')
-    if (month == '11'):
-        print('Novembro')
-    if (month == '12'):
-        print('Dezembro')
+    months = ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho',
+              'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro']
 
-check_month(month)
+    print(f'{months[month -1]}\n')
+
+
+def validate_month(month):
+
+    if month < 1 or month > 12:
+        print('Data inválida.\n')
+        return
+
+    check_month(month)
+
+
+validate_month(month)
