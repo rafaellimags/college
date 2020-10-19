@@ -31,10 +31,9 @@
 * [Verificar classe de IP](python/ip_class.py)
 * [Mostrar mes](python/month.py)
 * [Validar data](python/date_validation.py)
-
-### TP1
-* [Soma de todos os números](pyhon/sum_all.py)
-* [Total dias de vida](pyhon/living_days_count.py)
-* [Fatorial com for](pyhon/factorial_for.py)
-* [Fatorial com while](pyhon/factorial_while.py)
-* [Operações com tupla](pyhon/tuple.py)
+* **TP1**
+    * [Soma de todos os números](python/tp1/sum_all.py)
+    * [Idade em dias](python/tp1/living_days_count.py)
+    * [Fatorial com for](python/tp1/factorial_for.py)
+    * [Fatorial com while](python/tp1/factorial_while.py)
+    * [Operações com tupla](python/tp1/tuple.py)
