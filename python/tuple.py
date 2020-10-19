@@ -1,17 +1,16 @@
-option = input('Escolha uma opção:\n\n1 - Encontrar o elemento na tupla\n2 - Dividir uma tupla\n3 - Excluir elemento da tupla\n4 - Inverter elementos da tupla\n\n')
+option = input('\nEscolha uma opção para executar uma ação na tupla (1, 2, 3, 4, 5, 6):\n\n1 - Encontrar o elemento na tupla\n2 - Dividir uma tupla\n3 - Excluir elemento da tupla\n4 - Inverter elementos da tupla\n\nOpção: ')
+
 
 def find():
-    e = input('Elemento: ')
+    e = int(input('Elemento: '))
 
-    t = ('Azul', 'Vermelho', 'Verde')
-
+    t = (1, 2, 3, 4, 5, 6)
 
     def find_element(e, t):
         if e in t:
             return t.index(e)
 
-
-    print('O índice do elemento é o', find_element(e, t))
+    print('Índice do elemento:', find_element(e, t))
 
 
 def split():
@@ -20,7 +19,7 @@ def split():
 
     def split_tuple(t):
 
-        if (int(len(t)%2) == 0):
+        if (int(len(t) % 2) == 0):
             size_each = int(len(t)//2)
             t_result_1 = t[:size_each]
             t_result_2 = t[size_each:]
@@ -29,20 +28,16 @@ def split():
             t_result_1 = t[:size_each]
             t_result_2 = t[size_each:-1]
 
-        return print(f'Tupla 1: {t_result_1}\nTupla 2: {t_result_2}')
-
+        return print(f'\nResultado: Tupla 1: {t_result_1} | Tupla 2: {t_result_2}')
 
     split_tuple(t)
 
 
 def remove():
 
-    val = int(input('Elemento que será removido: '))
+    val = int(input('\nElemento que será removido: '))
 
     t = (1, 2, 3, 4, 5)
-
-    print(f'Tupla original {t}')
-
 
     def remove_element(val, t):
 
@@ -50,8 +45,8 @@ def remove():
 
         return t
 
+    print('Resultado:', remove_element(val, t))
 
-    print('Nova tupla:', remove_element(val, t))
 
 def revert():
 
@@ -60,7 +55,7 @@ def revert():
     def revert_tuple(t):
         return t[::-1]
 
-    print(f'Normal: {t}\nRevertido:', revert_tuple(t))
+    print(f'\nResultado:', revert_tuple(t))
 
 
 if option == '1':
