@@ -37,3 +37,4 @@
 * [Total dias de vida](pyhon/living_days_count.py)
 * [Fatorial com for](pyhon/factorial_for.py)
 * [Fatorial com while](pyhon/factorial_while.py)
+* [Operações com tupla](pyhon/tuple.py)
