@@ -33,5 +33,4 @@
 * [Validar data](python/date_validation.py)
 
 ### TP1
-
-
+* [Soma de todos os números](pyhon/sum_all.py)
