@@ -34,3 +34,4 @@
 
 ### TP1
 * [Soma de todos os números](pyhon/sum_all.py)
+* [Total dias de vida](pyhon/living_days_count.py)
