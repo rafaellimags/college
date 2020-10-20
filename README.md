@@ -37,3 +37,4 @@
     * [Fatorial com for](python/tp1/factorial_for.py)
     * [Fatorial com while](python/tp1/factorial_while.py)
     * [Operações com tupla](python/tp1/tuple.py)
+    * [Círculo com turtle](python/tp1/turtle_draw.py)
