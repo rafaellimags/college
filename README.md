@@ -39,3 +39,4 @@
     * [Operações com tupla](python/tp1/tuple.py)
     * [Círculo com turtle](python/tp1/turtle_draw.py)
     * [Quadrados com turtle](python/tp1/squares.py)
+    * [Tipos de triângulos](python/tp1/triangles.py)

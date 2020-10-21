@@ -1,4 +1,4 @@
-def check_triangle(triagle):
+def check_triangle(triangle):
     if triangle[0] == triangle[1] == triangle[2]:
         print('Triângulo Equilátero')
     elif triangle[0] == triangle[1] or triangle[0] == triangle[2] or triangle[1] == triangle[2]:
