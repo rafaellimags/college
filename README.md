@@ -41,4 +41,6 @@
     * [Quadrados com turtle](python/tp1/squares.py)
     * [Tipos de triângulos](python/tp1/triangles.py)
     * [Desenhar tipos de triângulos](python/tp1/draw_triangle.py)
-    * [Desenhar quadrado n lados](python/tp1/draw_triangle.py)
+    * [Desenhar quadrado lado n](python/tp1/square_2.py)
+    * [Desenhar quadrado lado n](python/tp1/draw_triangle_n.py)
+    * [Desenhar circulo raio r](python/tp1/draw_triangle_n.py)
