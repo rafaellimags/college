@@ -44,3 +44,4 @@
     * [Desenhar quadrado lado n](python/tp1/square_2.py)
     * [Desenhar quadrado lado n](python/tp1/draw_triangle_n.py)
     * [Desenhar circulo raio r](python/tp1/draw_triangle_n.py)
+    * [Desenhar poligonos](python/tp1/draw_poligons.py)
