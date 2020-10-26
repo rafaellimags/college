@@ -45,3 +45,5 @@
     * [Desenhar quadrado lado n](python/tp1/draw_triangle_n.py)
     * [Desenhar circulo raio r](python/tp1/draw_triangle_n.py)
     * [Desenhar poligonos](python/tp1/draw_poligons.py)
+    * [Poligonos location diferente](python/tp1/modf_turt_loc.py)
+    * [Rotação de string](python/tp1/string_rotation.py)
