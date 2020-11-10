@@ -7,5 +7,3 @@ while True:
     if len(int_arr) == 4:
         print('Fim da execução\n')
         break
-
-
