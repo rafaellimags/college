@@ -1,14 +1,22 @@
 print('\nComeçe a digitar abaixo:\n')
 
-text = []
+words = []
 
 while True:
     sentences = input('> ')
 
-    text.append(sentences)
+    words.append(sentences)
 
     if sentences == 'sair':
-        text.pop()
-        print(text)
+
+        print('\nEstas palavras contém "eu":\n ')
+
+        for word in words:
+            if 'eu' in word:
+                print(word)
+
+        words.pop()
+        print('\nPalavras usadas:\n')
+        print(words)
         break
 
