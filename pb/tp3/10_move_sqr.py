@@ -23,13 +23,13 @@ while running:
 
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_a:
-                x -= 1
+                x -= 5
             elif event.key == pygame.K_s:
-                y += 1
+                y += 5
             elif event.key == pygame.K_d:
-                x += 1
+                x += 5
             elif event.key == pygame.K_w:
-                y -= 1
+                y -= 5
 
     screen.fill((0,0,0))
     draw_sqr()
