@@ -77,8 +77,8 @@ while not terminou:
         show_storage_usage()
         cont = 0
 
-    pygame.display.update()
     
+    pygame.display.update()    
     clock.tick(60)
 
     cont = cont + 1

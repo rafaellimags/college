@@ -3,8 +3,8 @@ from pygame.locals import *
  
 LARGURA_TELA = 400
 ALTURA_TELA = 300
-FPS = 200
 LARGURA_LINHA = 10
+FPS = 200
 PALETA_TAMANHO = 50
 PALETAOFFSET = 20
 PRETO = (0, 0, 0)
@@ -37,6 +37,7 @@ def desenhaBola(bola):
 def moveBola(bola, bolaDirX, bolaDirY):
     bola.x += bolaDirX
     bola.y += bolaDirY
+    
     return bola
 
 # Verifica por colisão com as bordas e retorna uma nova posição caso exista colisão
@@ -110,11 +111,12 @@ def main():
     bolaDirY = -1    
     
     paleta1 = pygame.Rect(PALETAOFFSET,jogadorUm_posicao, LARGURA_LINHA,PALETA_TAMANHO)
-    paleta2 = pygame.Rect(LARGURA_TELA - PALETAOFFSET - LARGURA_LINHA, jogadorDois_posicao, LARGURA_LINHA,PALETA_TAMANHO)
-    bola = pygame.Rect(bolaX, bolaY, LARGURA_LINHA, LARGURA_LINHA)    
+    paleta2 = pygame.Rect(LARGURA_TELA - PALETAOFFSET - LARGURA_LINHA, jogadorDois_posicao, LARGURA_LINHA, PALETA_TAMANHO)
+    bola = pygame.Rect(bolaX, bolaY, LARGURA_LINHA, LARGURA_LINHA)
 
     pygame.mouse.set_visible(0) 
     terminou = False
+
     while (not terminou):
         desenhaArena()
         desenhaPaleta(paleta1)

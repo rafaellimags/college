@@ -51,6 +51,9 @@ def show_cpu_usage():
     s_proc.blit(text, (20, 0))
     tela.blit(s_proc, (0, 130))
 
+def cpu_details():
+    cores = psutil.cpu_cpunt(logical=False)
+
 
 def show_storage_usage():
     disco = psutil.disk_usage('.')
@@ -64,6 +67,7 @@ def show_storage_usage():
     s_strg.blit(text, (20, 0))
     tela.blit(s_strg, (0, 230))
 
+
 fn_lst = [
     mostra_uso_memoria,
     show_cpu_usage,
@@ -72,6 +76,7 @@ fn_lst = [
 
 clock = pygame.time.Clock()
 cont = 60
+navigation = -1
 terminou = False
 space = False
 right = False
@@ -88,13 +93,19 @@ while not terminou:
             left = True
             space = False
             cont = 60
+            navigation -= 1
+            if navigation < 0:
+                navigation = 0
 
         if event.type == pygame.KEYDOWN and event.key == pygame.K_RIGHT:
             right = True
             space = False
             cont = 60
-            tela.fill((0,0,0))
 
+            navigation += 1
+
+            if navigation > 2:
+                navigation = 2
 
         if event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE:
             space = True
@@ -103,21 +114,21 @@ while not terminou:
 
     if space:
         if cont == 60:
-            tela.fill((0,0,0))
+            tela.fill((0, 0, 0))
             fn_lst[0]()
             fn_lst[1]()
             fn_lst[2]()
             cont = 0
 
         cont = cont + 1
-    
+
     if right:
         if cont == 60:
-            fn_lst[0]()
+            tela.fill((0, 0, 0))
+            fn_lst[navigation]()
             cont = 0
-        
-        cont = cont + 1
 
+        cont = cont + 1
 
     pygame.display.update()
     clock.tick(60)
