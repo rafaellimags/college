@@ -12,6 +12,50 @@ pygame.display.set_caption("Uso de memória")
 pygame.display.init()
 
 
+class Frame:
+
+    def __init__(self, color = (0,0,0), filled = False, size = None, density = 0):
+        self.__color = color
+        self.__filled = filled
+        self.__size = size
+        self.__density = density
+
+    def set_color(self, color):
+        self.__color = color
+
+    def get_color(self):
+        return self.__color
+
+    def set_filled(self, filled):
+        self.__filled = filled
+
+    def get_filled(self):
+        return self.__filled
+
+    def set_size(self, size):
+        self.__size = size
+
+    def get_size(self):
+        return self.__size
+
+    def set_density(self, density):
+        self.__density = density
+
+    def get_density(self):
+        return self.__density
+
+FRAME = Frame(
+    (255, 255, 255),
+    False,
+    ((20, 30), (780, 30), (780, 68), (20, 68), (20, 30)),
+    1
+)
+
+FRAME_COLOR = FRAME.get_color()
+FRAME_FILLED = FRAME.get_filled()
+FRAME_SIZE = FRAME.get_size()
+FRAME_DENSITY = FRAME.get_density()
+
 pygame.font.init()
 font = pygame.font.Font('SpaceMono-Regular.ttf', 18)
 
@@ -48,7 +92,7 @@ def show_cpu_usage(position):
     cpu = psutil.cpu_percent(interval=0)
     s_proc.fill((0, 0, 0))
     larg = largura_tela - 2 * 22
-    pygame.draw.lines(s_proc, (255, 255, 255), False, ((20, 30), (780, 30), (780, 68), (20, 68), (20, 30)), 1)
+    pygame.draw.lines(s_proc, FRAME_COLOR, FRAME_FILLED, FRAME_SIZE, FRAME_DENSITY)
     # pygame.draw.rect(s_proc, azul, (20, 30, larg, 70))
     larg = larg * cpu / 100
     pygame.draw.rect(s_proc, (0, 255, 0), (24, 34, larg, 31))
