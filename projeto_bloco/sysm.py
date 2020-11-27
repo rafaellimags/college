@@ -4,7 +4,6 @@ import time
 
 largura_tela = 800
 altura_tela = 600
-preto = (0, 0, 0)
 branco = (255, 255, 255)
 azul = (0, 0, 255)
 vermelho = (255, 0, 0)
@@ -21,11 +20,14 @@ s_proc = pygame.surface.Surface((largura_tela, 70))
 s_strg = pygame.surface.Surface((largura_tela, 70))
 s_net = pygame.surface.Surface((largura_tela, 70))
 
-ip = psutil.net_if_addrs()['Wi-Fi'][1].address
-text_ip = "IP: " + ip
-text_ip = font.render(text_ip, 1, branco)
-s_net.blit(text_ip, (20, 0))
-tela.blit(s_net, (0, 340))
+
+def network(position):
+    ip = psutil.net_if_addrs()['Wi-Fi'][1].address
+    s_net.fill((0, 0, 0))
+    text_ip = "IP: " + ip
+    text_ip = font.render(text_ip, 1, branco)
+    s_net.blit(text_ip, (20, 0))
+    tela.blit(s_net, (0, 340))
 
 
 def mostra_uso_memoria(position):
@@ -71,16 +73,20 @@ def show_storage_usage(position):
 fn_lst = [
     mostra_uso_memoria,
     show_cpu_usage,
-    show_storage_usage
+    show_storage_usage,
+    network
 ]
 
 clock = pygame.time.Clock()
 cont = 60
 navigation = -1
 terminou = False
-space = False
+show_all = False
+show_init = True
 right = False
 left = False
+position = ((0, 30), (0, 120), (0, 210), (0, 260))
+
 
 while not terminou:
 
@@ -91,18 +97,20 @@ while not terminou:
 
         if event.type == pygame.KEYDOWN and event.key == pygame.K_LEFT:
             left = True
-            space = False
+            show_all = False
+            show_init = False
             cont = 60
-            position = (0, 30)
+            # position = (0, 30)
             navigation -= 1
             if navigation < 0:
                 navigation = 0
 
         if event.type == pygame.KEYDOWN and event.key == pygame.K_RIGHT:
             right = True
-            space = False
+            show_all = False
+            show_init = False
             cont = 60
-            position = (0, 30)
+            # position = (0, 30)
 
             navigation += 1
 
@@ -110,17 +118,17 @@ while not terminou:
                 navigation = 2
 
         if event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE:
-            space = True
+            show_all = True
             cont = 60
-            position = ((0, 30), (0, 120), (0, 210))
-            left, right = False, False
+            left, right, show_init = False, False, False
 
-    if space:
+    if show_all or show_init:
         if cont == 60:
-            tela.fill((0, 0, 0))
+            # tela.fill((0, 0, 0))
             fn_lst[0](position[0])
             fn_lst[1](position[1])
             fn_lst[2](position[2])
+            fn_lst[3](position[3])
             cont = 0
 
         cont = cont + 1
@@ -128,7 +136,7 @@ while not terminou:
     if right:
         if cont == 60:
             tela.fill((0, 0, 0))
-            fn_lst[navigation](position)
+            fn_lst[navigation](position[0])
             cont = 0
 
         cont = cont + 1
