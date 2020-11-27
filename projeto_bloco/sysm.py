@@ -47,10 +47,11 @@ def mostra_uso_memoria(position):
 def show_cpu_usage(position):
     cpu = psutil.cpu_percent(interval=0)
     s_proc.fill((0, 0, 0))
-    larg = largura_tela - 2 * 20
-    pygame.draw.rect(s_proc, azul, (20, 30, larg, 70))
+    larg = largura_tela - 2 * 22
+    pygame.draw.lines(s_proc, (255, 255, 255), False, ((20, 30), (780, 30), (780, 68), (20, 68), (20, 30)), 1)
+    # pygame.draw.rect(s_proc, azul, (20, 30, larg, 70))
     larg = larg * cpu / 100
-    pygame.draw.rect(s_proc, vermelho, (20, 30, larg, 70))
+    pygame.draw.rect(s_proc, (0, 255, 0), (24, 34, larg, 31))
     text = font.render("Uso de CPU: " + str(cpu) + "%", 1, branco)
     s_proc.blit(text, (20, 0))
     tela.blit(s_proc, position)
@@ -85,7 +86,7 @@ show_all = False
 show_init = True
 right = False
 left = False
-position = ((0, 30), (0, 120), (0, 210), (0, 260))
+position = ((0, 30), (0, 120), (0, 250), (0, 280))
 
 
 while not terminou:
@@ -100,7 +101,6 @@ while not terminou:
             show_all = False
             show_init = False
             cont = 60
-            # position = (0, 30)
             navigation -= 1
             if navigation < 0:
                 navigation = 0
@@ -110,7 +110,6 @@ while not terminou:
             show_all = False
             show_init = False
             cont = 60
-            # position = (0, 30)
 
             navigation += 1
 
@@ -124,7 +123,6 @@ while not terminou:
 
     if show_all or show_init:
         if cont == 60:
-            # tela.fill((0, 0, 0))
             fn_lst[0](position[0])
             fn_lst[1](position[1])
             fn_lst[2](position[2])
