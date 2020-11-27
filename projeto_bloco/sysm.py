@@ -28,7 +28,7 @@ s_net.blit(text_ip, (20, 0))
 tela.blit(s_net, (0, 340))
 
 
-def mostra_uso_memoria():
+def mostra_uso_memoria(position):
     mem = psutil.virtual_memory()
     s_mem.fill((0, 0, 0))
     larg = largura_tela - 2*20
@@ -39,22 +39,22 @@ def mostra_uso_memoria():
     texto_barra = "Uso de Memória (Total: " + str(total) + "GB):"
     text = font.render(texto_barra, 1, branco)
     s_mem.blit(text, (20, 0))
-    tela.blit(s_mem, (0, 30))
+    tela.blit(s_mem, position)
 
 
-def show_cpu_usage():
+def show_cpu_usage(position):
     cpu = psutil.cpu_percent(interval=0)
     s_proc.fill((0, 0, 0))
     larg = largura_tela - 2 * 20
     pygame.draw.rect(s_proc, azul, (20, 30, larg, 70))
     larg = larg * cpu / 100
     pygame.draw.rect(s_proc, vermelho, (20, 30, larg, 70))
-    text = font.render("Uso de CPU:" + str(cpu) + "%", 1, branco)
+    text = font.render("Uso de CPU: " + str(cpu) + "%", 1, branco)
     s_proc.blit(text, (20, 0))
-    tela.blit(s_proc, (0, 30))
+    tela.blit(s_proc, position)
 
 
-def show_storage_usage():
+def show_storage_usage(position):
     disco = psutil.disk_usage('.')
     s_strg.fill((0, 0, 0))
     larg = largura_tela - 2*20
@@ -65,7 +65,7 @@ def show_storage_usage():
     texto_barra = "Uso total do disco: " + str(total) + "GB"
     text = font.render(texto_barra, 1, branco)
     s_strg.blit(text, (20, 0))
-    tela.blit(s_strg, (0, 30))
+    tela.blit(s_strg, position)
 
 
 fn_lst = [
@@ -93,6 +93,7 @@ while not terminou:
             left = True
             space = False
             cont = 60
+            position = (0, 30)
             navigation -= 1
             if navigation < 0:
                 navigation = 0
@@ -101,6 +102,7 @@ while not terminou:
             right = True
             space = False
             cont = 60
+            position = (0, 30)
 
             navigation += 1
 
@@ -110,14 +112,15 @@ while not terminou:
         if event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE:
             space = True
             cont = 60
+            position = ((0, 30), (0, 120), (0, 210))
             left, right = False, False
 
     if space:
         if cont == 60:
             tela.fill((0, 0, 0))
-            fn_lst[0]()
-            fn_lst[1]()
-            fn_lst[2]()
+            fn_lst[0](position[0])
+            fn_lst[1](position[1])
+            fn_lst[2](position[2])
             cont = 0
 
         cont = cont + 1
@@ -125,7 +128,7 @@ while not terminou:
     if right:
         if cont == 60:
             tela.fill((0, 0, 0))
-            fn_lst[navigation]()
+            fn_lst[navigation](position)
             cont = 0
 
         cont = cont + 1
