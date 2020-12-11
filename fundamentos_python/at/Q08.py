@@ -21,18 +21,25 @@ def draw_circle():
 def draw_sqr():
     coord = [random.randint(0, 350), random.randint(0, 350)]
     pygame.draw.rect(sqr_srfc, (255, 255, 0), (0,0,50,50))
-    screen.blit(sqr_srfc, coord)
     pos_list.append(coord)
+    for sqr in pos_list:
+        screen.blit(sqr_srfc, sqr)
+
+    if len(pos_list) > 1:
+        for s in range(len(pos_list) -1):
+            if pos_list[s][0] - pos_list[-1][0] <= 50 and pos_list[s][1] - pos_list[-1][1] <= 50:
+                pos_list.remove(pos_list[s])
+                pos_list.remove(pos_list[-1])
 
 
-    for x in range(len(pos_list)-1):
-        if pos_list[x][0]+50 >= pos_list[-1][0] and pos_list[x][1]+50 >= pos_list[-1][1]:
-            # pos_list.remove(x)
-            screen.fill((0,0,0))
-            pos_list.remove(pos_list[-1])
-            break
-        else:
-            print(False)
+    # for x in range(len(pos_list)-1):
+    #     if pos_list[x][0]+50 >= pos_list[-1][0] and pos_list[x][1]+50 >= pos_list[-1][1]:
+    #         # pos_list.remove(x)
+    #         screen.fill((0,0,0))
+    #         pos_list.remove(pos_list[-1])
+    #         break
+    #     else:
+    #         print(False)
 
     print(pos_list)
 
