@@ -22,6 +22,8 @@ for about in bs.find_all('p', class_='about-text'):
     
 total_words = len(words)
 
+print(f'A palavra ladies apareceu {ladies} vezes')
+
 print(f'Total de palavras: {total_words}')
 
 same_words = dict(Counter(words))

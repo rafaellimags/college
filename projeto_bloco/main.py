@@ -2,15 +2,16 @@ import pygame
 import psutil
 import time
 import platform
-
-
+# import os
+# os.environ["SDL_VIDEODRIVER"] = "dummy"
+# Define cores e dimensões da tela
 largura_tela = 800
 altura_tela = 600
 branco = (255, 255, 255)
 azul = (0, 0, 255)
 vermelho = (255, 0, 0)
 tela = pygame.display.set_mode((largura_tela, altura_tela))
-pygame.display.set_caption("Uso de memória")
+pygame.display.set_caption("Monitor de Recursos")
 pygame.display.init()
 
 
