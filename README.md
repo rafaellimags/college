@@ -1,3 +1,4 @@
+<!-- 
 ## Index
 
 ### Lógica, computação e algoritmos
@@ -50,4 +51,5 @@
     * [Rotação de string](python/tp1/17_string_rotation.py)
     * [Desenhar poligono](python/tp1/18_triangle_polygon.py)
     * [Espiral quadrado](python/tp1/19_square_spiral.py)
-    * [Desenho livre](python/tp1/20_tilted_square_spiral.py)
+    * [Desenho livre](python/tp1/20_tilted_square_spiral.py) 
+-->
