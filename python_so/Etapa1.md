@@ -1,11 +1,14 @@
-# ETAPA 1
+# Módulo OS
+
+```py
 import os
 import time
+```
 
+```py
 print(dir()) # return the names in the current scope
 print(os.name)
 print(os.getlogin())
-# print(os.environ)
 print(os.environ["HOMEDRIVE"])  # return driver name where system is
 os.environ.get('ENV_VAR') # same as above
 print(os.getcwd())  # return current working directory
@@ -37,3 +40,4 @@ os.times()  # return process timing info
 os.spawnl(p.NOWAIT, "file.exe", " ")  # executes a process
 os.startfile("path")
 os.system("calc")
+```
