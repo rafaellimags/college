@@ -2,9 +2,7 @@ import pygame
 import psutil
 import time
 import platform
-# import os
-# os.environ["SDL_VIDEODRIVER"] = "dummy"
-# Define cores e dimensões da tela
+
 largura_tela = 800
 altura_tela = 600
 branco = (255, 255, 255)
