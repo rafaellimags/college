@@ -2,50 +2,20 @@ import pygame
 import psutil
 import time
 import platform
+from ui.view import Frame, Fill
 
 largura_tela = 800
 altura_tela = 600
 branco = (255, 255, 255)
 azul = (0, 0, 255)
 vermelho = (255, 0, 0)
+pygame.display.init()
+pygame.font.init()
 tela = pygame.display.set_mode((largura_tela, altura_tela))
 pygame.display.set_caption("Monitor de Recursos")
-pygame.display.init()
+font = pygame.font.Font('SpaceMono-Regular.ttf', 18)
 
-
-class Frame:
-
-    def __init__(self, color=(0, 0, 0), filled=False, size=None, density=0):
-        self.__color = color
-        self.__filled = filled
-        self.__size = size
-        self.__density = density
-
-    def set_color(self, color):
-        self.__color = color
-
-    def get_color(self):
-        return self.__color
-
-    def set_filled(self, filled):
-        self.__filled = filled
-
-    def get_filled(self):
-        return self.__filled
-
-    def set_size(self, size):
-        self.__size = size
-
-    def get_size(self):
-        return self.__size
-
-    def set_density(self, density):
-        self.__density = density
-
-    def get_density(self):
-        return self.__density
-
-
+# container borders
 FRAME = Frame(
     (255, 255, 255),
     False,
@@ -53,6 +23,7 @@ FRAME = Frame(
     1
 )
 
+# resource information above each container
 FRAME_INFO = Frame(
     (255, 255, 255),
     False,
@@ -66,37 +37,13 @@ INFO_BORDER_COLOR = FRAME_INFO.get_color()
 INFO_DESITY = FRAME_INFO.get_density()
 INFO_FILL = FRAME_INFO.get_filled()
 
-
-class Fill(object):
-
-    def __init__(self, color=(0, 0, 0), size=None):
-        self.__color = color
-        self.__size = size
-
-    def set_color(self, color):
-        self.__color = color
-
-    def get_color(self):
-        return self.__color
-
-    def set_size(self, size):
-        self.__size = size
-
-    def get_size(self):
-        return self.__size
-
-
+# rousource bar color
 fill = Fill((0, 255, 0))
-
 FILL_COLOR = fill.get_color()
-
 FRAME_COLOR = FRAME.get_color()
 FRAME_FILLED = FRAME.get_filled()
 FRAME_SIZE = FRAME.get_size()
 FRAME_DENSITY = FRAME.get_density()
-
-pygame.font.init()
-font = pygame.font.Font('SpaceMono-Regular.ttf', 18)
 
 s_mem = pygame.surface.Surface((largura_tela, 70))
 s_proc = pygame.surface.Surface((largura_tela, 70))
