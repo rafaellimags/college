@@ -14,6 +14,7 @@ pygame.font.init()
 tela = pygame.display.set_mode((largura_tela, altura_tela))
 pygame.display.set_caption("Monitor de Recursos")
 font = pygame.font.Font('SpaceMono-Regular.ttf', 18)
+IP = psutil.net_if_addrs()['Wi-Fi'][1].address
 
 # container borders
 FRAME = Frame(
@@ -31,7 +32,6 @@ FRAME_INFO = Frame(
     1
 )
 
-
 INFO_SIZE = FRAME_INFO.get_size()
 INFO_BORDER_COLOR = FRAME_INFO.get_color()
 INFO_DESITY = FRAME_INFO.get_density()
@@ -45,69 +45,105 @@ FRAME_FILLED = FRAME.get_filled()
 FRAME_SIZE = FRAME.get_size()
 FRAME_DENSITY = FRAME.get_density()
 
-s_mem = pygame.surface.Surface((largura_tela, 70))
-s_proc = pygame.surface.Surface((largura_tela, 70))
-s_proc1 = pygame.surface.Surface((largura_tela, 70))
-s_proc2 = pygame.surface.Surface((largura_tela, 70))
-s_proc3 = pygame.surface.Surface((largura_tela, 70))
-s_proc4 = pygame.surface.Surface((largura_tela, 70))
-s_proc_info = pygame.surface.Surface((largura_tela, 180))
-s_strg = pygame.surface.Surface((largura_tela, 70))
-s_net = pygame.surface.Surface((400, 200))
-s_info = pygame.surface.Surface((largura_tela, 280))
-
-
-def network(position, show_all):
-    ip = psutil.net_if_addrs()['Wi-Fi'][1].address
+def network(position, show_all, net_stat):
+    s_net = pygame.surface.Surface((800, 600))
     netio = psutil.net_io_counters(pernic=False, nowrap=True)
-    y = 0
-    for net_data in netio[:6]:
-        text_data = font.render(str(net_data), 1, branco)
-        s_net.blit(text_data, (0, y))
-        tela.blit(s_net, (24, 380))
+    bytes_sent = str(netio.bytes_sent)
+    bytes_recvd = str(netio.bytes_recv)
+    pckts_sent = str(netio.packets_sent)
+    pckts_recvd = str(netio.packets_recv)
+    err_in = str(netio.errin)
+    err_out = str(netio.errout)
+    nw_data = [IP, bytes_sent, bytes_recvd,
+               pckts_sent, pckts_recvd,
+               err_in, err_out]
+
+    title_status = "Estatísticas da Rede"
+    legend = ["IP", "Bytes enviados", "Bytes Recebidos", "Pacotes enviados",
+              "Pacotes recebidos", "Erros recebidos", "Erros enviados"]
+
+    y = 48
+    l = 0
+    for data in nw_data:
+        text_data = font.render(f"{legend[l]}: {data}", 1, branco)
+        if net_stat:
+            title = font.render(title_status, 4, branco)
+            s_net.blit(title, (320, 0))
+            tela.blit(s_net, (0, 0))
+            s_net.blit(text_data, (24, y))
+        else:
+            s_net.blit(font.render(f"IP: {IP}", 1, branco), (0, y))
+            tela.blit(s_net, position)
+            break        
+            
         y = y + 24
+        l += 1
+
 
     s_net.fill((0, 0, 0))
 
-    # bytes_sent = str(io_stat.bytes_sent)
-    # bytes_recvd = str(io_stat.bytes_recv)
-    # pckts_sent = str(io_stat.packets_sent)
-    # pckts_recvd = str(io_stat.packets_recv)
-    # err_in = str(io_stat.errin)
-    # err_out = str(io_stat.errout)
-    # text_ip = font.render(ip, 1, branco)
-    # s_net.blit(text_ip, (0, 0))
-    # tela.blit(s_net, (24, 380))
-
 
 def mostra_uso_memoria(position, show_all):
-    mem = psutil.virtual_memory()
-    s_mem.fill((0, 0, 0))
+    s_mem = pygame.surface.Surface((largura_tela, 600))
+    svmem = psutil.virtual_memory()
     larg = largura_tela - 2*22
     pygame.draw.lines(s_mem, FRAME_COLOR, FRAME_FILLED,
                       FRAME_SIZE, FRAME_DENSITY)
-    larg = larg*mem.percent/100
-    pygame.draw.rect(s_mem, FILL_COLOR, (24, 34, larg, 31))
-    total = round(mem.used/(1024*1024*1024), 2)
-    texto_barra = "Uso total da memória" + "{:>46}".format(str(total)) + " GB"
+    larg_percent = larg*svmem.percent/100
+    print(larg_percent)
+    pygame.draw.rect(s_mem, FILL_COLOR, (24, 34, larg_percent, 31))
+    used = round(svmem.used/(1024**3), 2)
+    total = round(svmem.total/(1024**3), 2)
+    texto_barra = "Uso total da memória" + "{:>46}".format(str(used) + " / " + str(total)) + " GB"
     text = font.render(texto_barra, 1, branco)
     s_mem.blit(text, (20, 0))
     tela.blit(s_mem, position)
+    
+    if not show_all:
+        s_mem.fill((0, 0, 0))
+        free_fill_color = (0,255,0)
+        free_mem = round(svmem.free/(1024**3), 2)
+        total_mem = round(svmem.total/(1024**3), 2)
+        free_percent = free_mem / total_mem
+        larg_free = larg * free_percent
+        if free_percent < 0.12:
+            free_fill_color = (255,0,0)
+
+        pygame.draw.lines(s_mem, FRAME_COLOR, FRAME_FILLED,
+                      FRAME_SIZE, FRAME_DENSITY)
+        pygame.draw.rect(s_mem, free_fill_color, (24, 34, larg_free, 31))
+
+        text_free = round(svmem.free/(1024**3), 2)
+        texto_barra = "Memória livre" + "{:>46}".format(str(text_free)) + " GB"
+        text = font.render(texto_barra, 1, branco)
+        s_mem.blit(text, (20, 0))
+        tela.blit(s_mem, (0, 120))
+        
+
+    s_mem.fill((0, 0, 0))
+
+    
 
 
 def show_cpu_usage(position, show_all):
+    s_proc0 = pygame.surface.Surface((largura_tela, 70))
+    s_proc1 = pygame.surface.Surface((largura_tela, 70))
+    s_proc2 = pygame.surface.Surface((largura_tela, 70))
+    s_proc3 = pygame.surface.Surface((largura_tela, 70))
+    s_proc4 = pygame.surface.Surface((largura_tela, 70))
+    s_proc_info = pygame.surface.Surface((largura_tela, 180))
     if show_all:
         cpu_total = psutil.cpu_percent(interval=0, percpu=False)
-        s_proc.fill((0, 0, 0))
+        s_proc0.fill((0, 0, 0))
         larg = largura_tela - 2 * 22
-        pygame.draw.lines(s_proc, FRAME_COLOR, FRAME_FILLED,
+        pygame.draw.lines(s_proc0, FRAME_COLOR, FRAME_FILLED,
                           FRAME_SIZE, FRAME_DENSITY)
         larg = larg * cpu_total / 100
-        pygame.draw.rect(s_proc, FILL_COLOR, (24, 34, larg, 31))
+        pygame.draw.rect(s_proc0, FILL_COLOR, (24, 34, larg, 31))
         text = font.render(
             "Uso da CPU" + "{:>58}".format(str(cpu_total)) + "%", 1, branco)
-        s_proc.blit(text, (20, 0))
-        tela.blit(s_proc, position)
+        s_proc0.blit(text, (20, 0))
+        tela.blit(s_proc0, position)
     else:
         cpu = psutil.cpu_percent(interval=0, percpu=True)
         arch = platform.architecture()[0]
@@ -170,6 +206,7 @@ def show_cpu_usage(position, show_all):
 
 
 def show_storage_usage(position, show_all):
+    s_strg = pygame.surface.Surface((largura_tela, 70))
     disco = psutil.disk_usage('.')
     s_strg.fill((0, 0, 0))
     larg = largura_tela - 2*22
@@ -178,13 +215,15 @@ def show_storage_usage(position, show_all):
     larg = larg*disco.percent/100
     pygame.draw.rect(s_strg, FILL_COLOR, (24, 34, larg, 31))
     total = round(disco.total/(1024*1024*1024), 2)
-    texto_barra = "Uso total do disco: " + "{:>46}".format(str(total)) + " GB"
+    usado = round(disco.used/(1024*1024*1024), 2)
+    texto_barra = "Uso total do disco: " + "{:>46}".format(str(usado) + " / " + str(total)) + " GB"
     text = font.render(texto_barra, 1, branco)
     s_strg.blit(text, (20, 0))
     tela.blit(s_strg, position)
 
 
 def aditional_info(position, show_all):
+    s_info = pygame.surface.Surface((largura_tela, 280))
     s_info.fill((0, 0, 0))
     pygame.draw.lines(s_info, INFO_BORDER_COLOR, INFO_FILL, ((
         20, 0), (780, 0), (780, 278), (20, 278), (20, 0)), INFO_DESITY)
@@ -195,7 +234,7 @@ fn_lst = [
     mostra_uso_memoria,
     show_cpu_usage,
     show_storage_usage,
-    aditional_info,
+    # aditional_info,
     network
 ]
 
@@ -207,7 +246,7 @@ show_all = True
 show_init = True
 right = False
 left = False
-position = ((0, 30), (0, 120), (0, 210), (0, 300), (0, 360))
+position = ((0, 30), (0, 120), (0, 210), (24, 320))
 
 # Navigation keys
 while not terminou:
@@ -234,8 +273,8 @@ while not terminou:
 
             navigation += 1
 
-            if navigation > 4:
-                navigation = 4
+            if navigation > 3:
+                navigation = 3
 
         if event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE:
             show_all = True
@@ -244,11 +283,12 @@ while not terminou:
 
     if show_all or show_init:
         if cont == 60:
+            net_stat = False
             fn_lst[0](position[0], show_all)
             fn_lst[1](position[1], show_all)
             fn_lst[2](position[2], show_all)
-            fn_lst[3](position[3], show_all)
-            fn_lst[4](position[4], show_all)
+            fn_lst[3](position[3], show_all, net_stat)
+            # fn_lst[4](position[4], show_all)
             cont = 0
 
         cont = cont + 1
@@ -256,7 +296,12 @@ while not terminou:
     if right:
         if cont == 60:
             tela.fill((0, 0, 0))
-            fn_lst[navigation](position[0], show_all)
+            if fn_lst[navigation] == network:
+                net_stat = True
+                fn_lst[navigation](position[navigation], show_all, net_stat)
+            else:
+                fn_lst[navigation](position[0], show_all)
+                
             cont = 0
 
         cont = cont + 1
