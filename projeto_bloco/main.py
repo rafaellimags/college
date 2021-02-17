@@ -45,6 +45,7 @@ FRAME_FILLED = FRAME.get_filled()
 FRAME_SIZE = FRAME.get_size()
 FRAME_DENSITY = FRAME.get_density()
 
+
 def network(position, show_all, net_stat):
     s_net = pygame.surface.Surface((800, 600))
     netio = psutil.net_io_counters(pernic=False, nowrap=True)
@@ -74,11 +75,10 @@ def network(position, show_all, net_stat):
         else:
             s_net.blit(font.render(f"IP: {IP}", 1, branco), (0, y))
             tela.blit(s_net, position)
-            break        
-            
+            break
+
         y = y + 24
         l += 1
-
 
     s_net.fill((0, 0, 0))
 
@@ -90,39 +90,36 @@ def mostra_uso_memoria(position, show_all):
     pygame.draw.lines(s_mem, FRAME_COLOR, FRAME_FILLED,
                       FRAME_SIZE, FRAME_DENSITY)
     larg_percent = larg*svmem.percent/100
-    print(larg_percent)
     pygame.draw.rect(s_mem, FILL_COLOR, (24, 34, larg_percent, 31))
     used = round(svmem.used/(1024**3), 2)
     total = round(svmem.total/(1024**3), 2)
-    texto_barra = "Uso total da memória" + "{:>46}".format(str(used) + " / " + str(total)) + " GB"
+    texto_barra = "Uso total da memória" + \
+        "{:>46}".format(str(used) + " / " + str(total)) + " GB"
     text = font.render(texto_barra, 1, branco)
     s_mem.blit(text, (20, 0))
     tela.blit(s_mem, position)
-    
+
     if not show_all:
         s_mem.fill((0, 0, 0))
-        free_fill_color = (0,255,0)
+        free_fill_color = (0, 255, 0)
         free_mem = round(svmem.free/(1024**3), 2)
         total_mem = round(svmem.total/(1024**3), 2)
         free_percent = free_mem / total_mem
         larg_free = larg * free_percent
         if free_percent < 0.12:
-            free_fill_color = (255,0,0)
+            free_fill_color = (255, 0, 0)
 
         pygame.draw.lines(s_mem, FRAME_COLOR, FRAME_FILLED,
-                      FRAME_SIZE, FRAME_DENSITY)
+                          FRAME_SIZE, FRAME_DENSITY)
         pygame.draw.rect(s_mem, free_fill_color, (24, 34, larg_free, 31))
 
         text_free = round(svmem.free/(1024**3), 2)
-        texto_barra = "Memória livre" + "{:>46}".format(str(text_free)) + " GB"
+        texto_barra = "Memória livre" + "{:>53}".format(str(text_free)) + " GB"
         text = font.render(texto_barra, 1, branco)
         s_mem.blit(text, (20, 0))
         tela.blit(s_mem, (0, 120))
-        
 
     s_mem.fill((0, 0, 0))
-
-    
 
 
 def show_cpu_usage(position, show_all):
@@ -206,7 +203,7 @@ def show_cpu_usage(position, show_all):
 
 
 def show_storage_usage(position, show_all):
-    s_strg = pygame.surface.Surface((largura_tela, 70))
+    s_strg = pygame.surface.Surface((largura_tela, 600))
     disco = psutil.disk_usage('.')
     s_strg.fill((0, 0, 0))
     larg = largura_tela - 2*22
@@ -216,10 +213,19 @@ def show_storage_usage(position, show_all):
     pygame.draw.rect(s_strg, FILL_COLOR, (24, 34, larg, 31))
     total = round(disco.total/(1024*1024*1024), 2)
     usado = round(disco.used/(1024*1024*1024), 2)
-    texto_barra = "Uso total do disco: " + "{:>46}".format(str(usado) + " / " + str(total)) + " GB"
+    texto_barra = "Uso total do disco: " + \
+        "{:>46}".format(str(usado) + " / " + str(total)) + " GB"
     text = font.render(texto_barra, 1, branco)
     s_strg.blit(text, (20, 0))
     tela.blit(s_strg, position)
+    if not show_all:
+        partitions = psutil.disk_partitions(all=False)[0]
+        text_mpoint = font.render(f"Mountpoint: {partitions.mountpoint}", 1, branco)
+        text_fstype = font.render(f"Fstype: {partitions.fstype}", 1, branco)
+        s_strg.blit(text_mpoint, (20, 84))
+        s_strg.blit(text_fstype, (20, 124))
+        tela.blit(s_strg, position)
+
 
 
 def aditional_info(position, show_all):
@@ -301,7 +307,7 @@ while not terminou:
                 fn_lst[navigation](position[navigation], show_all, net_stat)
             else:
                 fn_lst[navigation](position[0], show_all)
-                
+
             cont = 0
 
         cont = cont + 1
