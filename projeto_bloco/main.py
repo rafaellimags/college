@@ -1,7 +1,8 @@
+import platform
 import pygame
 import psutil
 import time
-import platform
+import os
 from ui.view import Frame, Fill
 
 largura_tela = 800
@@ -38,7 +39,7 @@ INFO_DESITY = FRAME_INFO.get_density()
 INFO_FILL = FRAME_INFO.get_filled()
 
 # rousource bar color
-fill = Fill((0, 255, 0))
+fill = Fill((0, 200, 0))
 FILL_COLOR = fill.get_color()
 FRAME_COLOR = FRAME.get_color()
 FRAME_FILLED = FRAME.get_filled()
@@ -101,7 +102,7 @@ def mostra_uso_memoria(position, show_all):
 
     if not show_all:
         s_mem.fill((0, 0, 0))
-        free_fill_color = (0, 255, 0)
+        free_fill_color = (0, 200, 0)
         free_mem = round(svmem.free/(1024**3), 2)
         total_mem = round(svmem.total/(1024**3), 2)
         free_percent = free_mem / total_mem
@@ -227,7 +228,6 @@ def show_storage_usage(position, show_all):
         tela.blit(s_strg, position)
 
 
-
 def aditional_info(position, show_all):
     s_info = pygame.surface.Surface((largura_tela, 280))
     s_info.fill((0, 0, 0))
@@ -236,12 +236,72 @@ def aditional_info(position, show_all):
     tela.blit(s_info, position)
 
 
+def show_process_info(pos, show_all):
+    surface = pygame.surface.Surface((largura_tela, 600))
+    titulo = '{:<7}'.format("Name")
+    titulo = titulo +  '{:<6}'.format("PID")
+    titulo = titulo + '{:<8}'.format("Thrd.")
+    titulo = titulo + '{:<7}'.format("Data")
+    titulo = titulo + '{:<6}'.format("Usr")
+    titulo = titulo + '{:<6}'.format("Sys")
+    titulo = titulo + '{:<7}'.format("Mem%")
+    titulo = titulo + '{:<7}'.format("CPU%")
+    titulo = titulo + '{:<6}'.format("VMS")
+    titulo = titulo + " Exe\n"
+    titulo = font.render(titulo, 1, branco)
+    surface.blit(titulo, (24, 0))
+    tela.blit(surface, pos)
+
+
+# def mostra_info(pid):
+    
+#     def print_header():
+#         titulo = '{:^13}'.format("Nome")
+#         titulo = titulo +  '{:^9}'.format("PID")
+#         titulo = titulo + '{:^7}'.format("Threads")
+#         titulo = titulo + '{:^19}'.format("Criação")
+#         titulo = titulo + '{:^9}'.format("T.Usu")
+#         titulo = titulo + '{:^9}'.format("T.Sis")
+#         titulo = titulo + '{:^10}'.format("Mem(%)")
+#         titulo = titulo + '{:^10}'.format("CPU(%)")
+#         titulo = titulo + '{:^9}'.format("VMS")
+#         titulo = titulo + " Executável\n"
+#         return titulo
+
+
+#     def show_process_inf():
+#         p = psutil.Process(pid)
+#         texto = '{:^9}'.format(p.name())
+#         texto = texto + '{:^9}'.format(pid)
+#         texto = texto + '{:^7}'.format(p.num_threads())
+#         texto = texto + '{:^19}'.format(time.ctime(p.create_time())[4:19])
+#         texto = texto + '{:^9.2f}'.format(p.cpu_times().user)
+#         texto = texto + '{:^9.2f}'.format(p.cpu_times().system)
+#         texto = texto + '{:^10.2f}'.format(p.cpu_percent())
+#         texto = texto + '{:^10.2f}'.format(p.memory_percent())
+#         vms = p.memory_info().vms/1024/1024
+#         texto = texto + '{:^5.2f}'.format(vms) + "MB"
+#         texto = texto + '{:>16}'.format(os.path.basename(p.exe()))
+#         return texto
+
+
+#     return print_header, show_process_inf
+
+# p_header, p_data = mostra_info(psutil.Process().pid)
+# print(p_header())
+
+# # while True:
+# #     print(data())
+# #     time.sleep(1)
+
+
 fn_lst = [
     mostra_uso_memoria,
     show_cpu_usage,
     show_storage_usage,
     # aditional_info,
-    network
+    network,
+    show_process_info
 ]
 
 clock = pygame.time.Clock()
@@ -252,7 +312,7 @@ show_all = True
 show_init = True
 right = False
 left = False
-position = ((0, 30), (0, 120), (0, 210), (24, 320))
+position = ((0, 30), (0, 120), (0, 210), (24, 320), (0, 320))
 
 # Navigation keys
 while not terminou:
@@ -294,6 +354,7 @@ while not terminou:
             fn_lst[1](position[1], show_all)
             fn_lst[2](position[2], show_all)
             fn_lst[3](position[3], show_all, net_stat)
+            fn_lst[4](position[4], show_all)
             # fn_lst[4](position[4], show_all)
             cont = 0
 
