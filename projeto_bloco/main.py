@@ -238,11 +238,11 @@ def aditional_info(position, show_all):
 
 def show_process_info(pos, show_all):
     surface = pygame.surface.Surface((largura_tela, 600))
-    titulo = '{:<7}'.format("Name")
-    titulo = titulo +  '{:<6}'.format("PID")
+    titulo = '{:<6}'.format("Name")
+    titulo = titulo +  '{:<5}'.format("PID")
     titulo = titulo + '{:<8}'.format("Thrd.")
-    titulo = titulo + '{:<7}'.format("Data")
-    titulo = titulo + '{:<6}'.format("Usr")
+    titulo = titulo + '{:<8}'.format("Data")
+    titulo = titulo + '{:<7}'.format("Usr")
     titulo = titulo + '{:<6}'.format("Sys")
     titulo = titulo + '{:<7}'.format("Mem%")
     titulo = titulo + '{:<7}'.format("CPU%")
@@ -250,49 +250,25 @@ def show_process_info(pos, show_all):
     titulo = titulo + " Exe\n"
     titulo = font.render(titulo, 1, branco)
     surface.blit(titulo, (24, 0))
-    tela.blit(surface, pos)
-
-
-# def mostra_info(pid):
     
-#     def print_header():
-#         titulo = '{:^13}'.format("Nome")
-#         titulo = titulo +  '{:^9}'.format("PID")
-#         titulo = titulo + '{:^7}'.format("Threads")
-#         titulo = titulo + '{:^19}'.format("Criação")
-#         titulo = titulo + '{:^9}'.format("T.Usu")
-#         titulo = titulo + '{:^9}'.format("T.Sis")
-#         titulo = titulo + '{:^10}'.format("Mem(%)")
-#         titulo = titulo + '{:^10}'.format("CPU(%)")
-#         titulo = titulo + '{:^9}'.format("VMS")
-#         titulo = titulo + " Executável\n"
-#         return titulo
+    small_font = pygame.font.Font('SpaceMono-Regular.ttf', 12)
 
-
-#     def show_process_inf():
-#         p = psutil.Process(pid)
-#         texto = '{:^9}'.format(p.name())
-#         texto = texto + '{:^9}'.format(pid)
-#         texto = texto + '{:^7}'.format(p.num_threads())
-#         texto = texto + '{:^19}'.format(time.ctime(p.create_time())[4:19])
-#         texto = texto + '{:^9.2f}'.format(p.cpu_times().user)
-#         texto = texto + '{:^9.2f}'.format(p.cpu_times().system)
-#         texto = texto + '{:^10.2f}'.format(p.cpu_percent())
-#         texto = texto + '{:^10.2f}'.format(p.memory_percent())
-#         vms = p.memory_info().vms/1024/1024
-#         texto = texto + '{:^5.2f}'.format(vms) + "MB"
-#         texto = texto + '{:>16}'.format(os.path.basename(p.exe()))
-#         return texto
-
-
-#     return print_header, show_process_inf
-
-# p_header, p_data = mostra_info(psutil.Process().pid)
-# print(p_header())
-
-# # while True:
-# #     print(data())
-# #     time.sleep(1)
+    pid = psutil.Process().pid
+    p = psutil.Process(pid)
+    texto = '{:<10}'.format(p.name()[:7])
+    texto = texto + '{:<7}'.format(pid)
+    texto = texto + '{:<8}'.format(p.num_threads())
+    texto = texto + '{:<18}'.format(time.ctime(p.create_time())[4:19])
+    texto = texto + '{:<11.2f}'.format(p.cpu_times().user)
+    texto = texto + '{:<9.2f}'.format(p.cpu_times().system)
+    texto = texto + '{:<11.2f}'.format(p.memory_percent())
+    texto = texto + '{:<11.2f}'.format(p.cpu_percent())
+    vms = p.memory_info().vms/1024/1024
+    texto = texto + '{:<5.2f}'.format(vms) + "MB"
+    texto = texto + '{:>16}'.format(os.path.basename(p.exe()))
+    p_titulo = small_font.render(texto, 1, branco)
+    surface.blit(p_titulo, (24, 40))
+    tela.blit(surface, pos)
 
 
 fn_lst = [
