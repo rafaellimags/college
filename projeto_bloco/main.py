@@ -5,6 +5,7 @@ import time
 import os
 from ui.view import Frame, Fill
 
+
 largura_tela = 800
 altura_tela = 600
 branco = (255, 255, 255)
@@ -16,6 +17,8 @@ tela = pygame.display.set_mode((largura_tela, altura_tela))
 pygame.display.set_caption("Monitor de Recursos")
 font = pygame.font.Font('SpaceMono-Regular.ttf', 18)
 IP = psutil.net_if_addrs()['Wi-Fi'][1].address
+
+surface_i = pygame.surface.Surface((largura_tela, 600))
 
 # container borders
 FRAME = Frame(
@@ -227,6 +230,18 @@ def show_storage_usage(position, show_all):
         s_strg.blit(text_fstype, (20, 124))
         tela.blit(s_strg, position)
 
+    disk = psutil.disk_partitions(all=False)[0]._asdict()
+    y_pos = -8
+
+    if show_all:
+        for item in disk:
+            info = font.render(f"{item}: {disk[item]}", 1, branco)
+            surface_i.blit(info, (550, y_pos))
+            tela.blit(surface_i, (0, 320))
+            y_pos += 22
+
+    
+
 
 def aditional_info(position, show_all):
     s_info = pygame.surface.Surface((largura_tela, 280))
@@ -237,47 +252,38 @@ def aditional_info(position, show_all):
 
 
 def show_process_info(pos, show_all):
-    surface = pygame.surface.Surface((largura_tela, 600))
-    titulo = '{:<6}'.format("Name")
-    titulo = titulo +  '{:<5}'.format("PID")
-    titulo = titulo + '{:<8}'.format("Thrd.")
-    titulo = titulo + '{:<8}'.format("Data")
-    titulo = titulo + '{:<7}'.format("Usr")
-    titulo = titulo + '{:<6}'.format("Sys")
-    titulo = titulo + '{:<7}'.format("Mem%")
-    titulo = titulo + '{:<7}'.format("CPU%")
-    titulo = titulo + '{:<6}'.format("VMS")
-    titulo = titulo + " Exe\n"
-    titulo = font.render(titulo, 1, branco)
-    surface.blit(titulo, (24, 0))
-    
-    small_font = pygame.font.Font('SpaceMono-Regular.ttf', 12)
+    # surface = pygame.surface.Surface((largura_tela, 600))
+    p = psutil.Process(psutil.Process().pid)
 
-    pid = psutil.Process().pid
-    p = psutil.Process(pid)
-    texto = '{:<10}'.format(p.name()[:7])
-    texto = texto + '{:<7}'.format(pid)
-    texto = texto + '{:<8}'.format(p.num_threads())
-    texto = texto + '{:<18}'.format(time.ctime(p.create_time())[4:19])
-    texto = texto + '{:<11.2f}'.format(p.cpu_times().user)
-    texto = texto + '{:<9.2f}'.format(p.cpu_times().system)
-    texto = texto + '{:<11.2f}'.format(p.memory_percent())
-    texto = texto + '{:<11.2f}'.format(p.cpu_percent())
-    vms = p.memory_info().vms/1024/1024
-    texto = texto + '{:<5.2f}'.format(vms) + "MB"
-    texto = texto + '{:>16}'.format(os.path.basename(p.exe()))
-    p_titulo = small_font.render(texto, 1, branco)
-    surface.blit(p_titulo, (24, 40))
-    tela.blit(surface, pos)
+    process = {
+        "Name" : p.name()[:9],
+        "Threads" : p.num_threads(),
+        "Creation" : time.ctime(p.create_time()),
+        "Sys time" : p.cpu_times().system,
+        "Usr time" : p.cpu_times().user,
+        "Mem Usage" : p.memory_percent(),
+        "CPU Usage" : p.cpu_percent(),
+        "VMS" : p.memory_info().vms / 1024 / 1024,
+        "Exe" : p.exe()[-13:]
+    }
+
+    y_pos = 0
+
+    for item in process:
+        info = font.render(f"{item}: {process[item]}", 1, branco)
+        surface_i.blit(info, (24, y_pos))
+        tela.blit(surface_i, pos)
+        y_pos += 22
+
+    surface_i.fill((0,0,0))
 
 
 fn_lst = [
     mostra_uso_memoria,
     show_cpu_usage,
     show_storage_usage,
-    # aditional_info,
     network,
-    show_process_info
+    show_process_info,
 ]
 
 clock = pygame.time.Clock()
@@ -331,7 +337,6 @@ while not terminou:
             fn_lst[2](position[2], show_all)
             fn_lst[3](position[3], show_all, net_stat)
             fn_lst[4](position[4], show_all)
-            # fn_lst[4](position[4], show_all)
             cont = 0
 
         cont = cont + 1
