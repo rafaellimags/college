@@ -222,33 +222,19 @@ def show_storage_usage(position, show_all):
     text = font.render(texto_barra, 1, branco)
     s_strg.blit(text, (20, 0))
     tela.blit(s_strg, position)
-    if not show_all:
-        partitions = psutil.disk_partitions(all=False)[0]
-        text_mpoint = font.render(f"Mountpoint: {partitions.mountpoint}", 1, branco)
-        text_fstype = font.render(f"Fstype: {partitions.fstype}", 1, branco)
-        s_strg.blit(text_mpoint, (20, 84))
-        s_strg.blit(text_fstype, (20, 124))
-        tela.blit(s_strg, position)
 
     disk = psutil.disk_partitions(all=False)[0]._asdict()
     y_pos = -8
 
-    if show_all:
+    if not show_all:
         for item in disk:
             info = font.render(f"{item}: {disk[item]}", 1, branco)
             surface_i.blit(info, (550, y_pos))
             tela.blit(surface_i, (0, 320))
             y_pos += 22
 
+    surface_i.fill((0,0,0))
     
-
-
-def aditional_info(position, show_all):
-    s_info = pygame.surface.Surface((largura_tela, 280))
-    s_info.fill((0, 0, 0))
-    pygame.draw.lines(s_info, INFO_BORDER_COLOR, INFO_FILL, ((
-        20, 0), (780, 0), (780, 278), (20, 278), (20, 0)), INFO_DESITY)
-    tela.blit(s_info, position)
 
 
 def show_process_info(pos, show_all):
