@@ -4,6 +4,7 @@ import psutil
 import time
 import os
 from ui.view import Frame, Fill
+from lib.utils import sizeof_fmt
 
 
 largura_tela = 800
@@ -223,14 +224,30 @@ def show_storage_usage(position, show_all):
     s_strg.blit(text, (20, 0))
     tela.blit(s_strg, position)
 
-    disk = psutil.disk_partitions(all=False)[0]._asdict()
-    y_pos = -8
+    disk_part = psutil.disk_partitions(all=False)[0]._asdict()
+    io_counters = psutil.disk_io_counters()._asdict()
 
+    y_pos = 0
+
+    # Render disk text info
     if not show_all:
-        for item in disk:
-            info = font.render(f"{item}: {disk[item]}", 1, branco)
-            surface_i.blit(info, (550, y_pos))
-            tela.blit(surface_i, (0, 320))
+        for key_p, value_p in disk_part.items():
+            info = font.render(f"{key_p}: {value_p}", 1, branco)
+            surface_i.blit(info, (24, y_pos))
+            tela.blit(surface_i, (0, 120))
+            y_pos += 22
+
+        y_pos = -8
+
+        for key_c, value_c in io_counters.items():
+            if key_c == "read_time" or  key_c == "write_time":                
+                info = font.render(f"{key_c}: {value_c / 1000}sec", 1, branco)
+            elif key_c == "read_bytes" or key_c == "write_bytes":
+                info = font.render(f"{key_c}: {sizeof_fmt(value_c)}", 1, branco)
+            else:
+                info = font.render(f"{key_c}: {value_c}", 1, branco)
+            surface_i.blit(info, (224, y_pos))
+            tela.blit(surface_i, (0, 120))
             y_pos += 22
 
     surface_i.fill((0,0,0))
